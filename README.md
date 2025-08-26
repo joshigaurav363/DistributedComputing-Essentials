@@ -1,1 +1,1 @@
-Spark Deep Dive
+Deep Dive into Distributed Computing
