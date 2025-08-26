@@ -1,6 +1,6 @@
 Spark Joins:
 
-Spark uses various join strategies to optimise performance based on data charactersticks and available resources. These strategies are choosen by spark catalyst optimiser.
+Spark uses various join strategies to optimise performance based on data characterstics and available resources. These strategies are choosen by spark catalyst optimiser.
 
 Broadcast Hash Join : when one dataframe(or table) is smaller and other is huge, the smaller once can be broadcasted.
 
