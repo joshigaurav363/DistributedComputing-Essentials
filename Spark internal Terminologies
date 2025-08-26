@@ -1,0 +1,38 @@
+Spark terminology
+
+SparkContext:  The entry point to Spark functionality, responsible for connecting to the cluster.
+ResourceProfile:  Defines resource allocation (CPU, memory) for Spark executors. allows the user to specify executor and task requirements for an RDD that will get applied during a stage.
+SecurityManager: Manages authentication and permissions in Spark.
+
+Access Control Lists: These are security features that control who has permission to view or modify a running Spark application. enabled and configured using properties like:
+
+ ****`spark.acls.enable`, `spark.ui.view.acls`, and `spark.admin.acls`
+
+SparkEnv: "Spark Env" refers to the environment variables and configuration settings used to control the behavior of Apache Spark applications and the Spark runtime. These settings influence how Spark operates,
+including resource allocation, performance tuning, and interaction with underlying systems. managed using : conf/spark-env.sh
+
+BlockManagerMaster: a crucial component that runs on the driver and executors to manage and exchange metadata about data blocks (like cached RDD partitions and shuffle data) across the application.
+
+BlockManagerMasterEndpoint: the RPC (Remote Procedure Call) endpoint for the BlockManagerMaster, which runs on the driver to track the status and location 
+of data blocks stored on BlockManagers of executors within a Spark application.
+
+DiskBlockManager: Creates and maintains the logical mapping between logical blocks and physical on-disk locations.  one block is mapped to one file with a name given by its BlockId
+
+MemoryManager: This is the highest-level memory abstraction in Spark. It splits the overall executor memory into execution memory and storage memory and enables dynamic sharing between them.
+
+SerializerManager: The MemoryStore uses the SerializerManager to handle the serialization of data when storing it in a serialized format (e.g., MEMORY_ONLY_SER)
+
+MemoryStore: MemoryStore is a fundamental component of the storage system responsible for managing data blocks stored in memory. It is a part of the BlockManager, 
+which handles the storage and retrieval of RDD partitions and intermediate shuffle data.  MemoryStore primarily stores data in the JVM heap of the Spark executor. This allows for very fast access to cached RDDs and
+shuffle data, which is crucial for Spark's performance as an in-memory computing engine.
+
+Spark's memory management system divides the executor's JVM heap into Spark Memory and User Memory. The MemoryStore operates within the Spark Memory portion.The effectiveness of the MemoryStore is directly tied to the RDD persistence levels chosen by the user (e.g., `MEMORY_ONLY`, `MEMORY_AND_DISK`).
+
+OutputCommitCoordinator:  coordinates the committing of task output to ensure only one task per partition can commit, preventing data corruption and duplicate writes.
+
+JettyUtils: provides utilities for launching and managing Jetty HTTP servers, particularly for Spark's web user interface.
+
+Executor:  Executor is a worker process responsible for executing tasks within a Spark application on a cluster's worker nodes. It is a key component of Spark's distributed architecture, enabling parallel processing of data. 
+
+
+
