@@ -1,21 +1,27 @@
 Spark Joins:
 
-Spark uses various join strategies to optimise performance based on data characterstics and available resources. These strategies are choosen by spark catalyst optimiser.
+Spark uses various join strategies to optimise performance based on data characterstics and available resources. 
+These strategies are choosen by spark catalyst optimiser.
 
 Broadcast Hash Join : when one dataframe(or table) is smaller and other is huge, the smaller once can be broadcasted.
 
 Shuffle Hash Join: Suitable when neither of the joined tables can fit in memory. it involves a shuffle phase , 
-where data is redistributed across partitions based on the join key . this stretgy should be used carefully as it can incour I/O costs. 
-spark.sql.join.preferSortMergeJoin. df_clients.hint('SHUFFLE_HASH').join(df_orders, on='client_id', how='inner')
+where data is redistributed across partitions based on the join key . this stratetgy should be used carefully as it can incour I/O costs. 
+spark config: spark.sql.join.preferSortMergeJoin. 
+
+df_clients.hint('SHUFFLE_HASH').join(df_orders, on='client_id', how='inner')
 
 Sort Merge Join: appropritate when neither of the tables can be fit in memory. it involves sorting both tables based ont he join key and then merging them .
 it provides good performance for certain types of queries but requires sorting which can be computationally expensive.
-spark.sql.join.preferSortMerge. df_clients.hint("MERGE").join(df_orders, on='client_id', how='inner'). In the physical PLAN and DAG, sort merge join iccurs in 3 steps:
+spark config: spark.sql.join.preferSortMerge. df_clients.hint("MERGE").join(df_orders, on='client_id', how='inner'). 
+In the physical PLAN and DAG, sort merge join occurs in 3 steps:
 
-Shuffle: data from both tables is paritioned based on the join key.
-SORT: within each partition , data is then sorted based on the join key.
-MERGE: sorted data is subsequently merged across partitions to execute the join operation.
-Cartesian Product Join: It involves joining every row from first table with every row from second table. its highly resource intensive.
+  Shuffle: data from both tables is paritioned based on the join key.
+  SORT: within each partition , data is then sorted based on the join key.
+  MERGE: sorted data is subsequently merged across partitions to execute the join operation.
+  Cartesian Product Join: It involves joining every row from first table with every row from second table. its highly resource intensive.
 
 Broadcast Nested Loop joins: used when joiing a large table with a small table but the small table doesnt fit in memory but has filter condition. 
-the smaller table is broadcasted and nested loop is used to join matching records. setspark.sql.crossJoin.enabled to true.
+the smaller table is broadcasted and nested loop is used to join matching records. 
+
+spark config: spark.sql.crossJoin.enabled to true.
