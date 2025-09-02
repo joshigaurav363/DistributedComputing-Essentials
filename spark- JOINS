@@ -7,7 +7,7 @@ Broadcast Hash Join : when one dataframe(or table) is smaller and other is huge,
 
 Shuffle Hash Join: Suitable when neither of the joined tables can fit in memory. it involves a shuffle phase , 
 where data is redistributed across partitions based on the join key . this stratetgy should be used carefully as it can incour I/O costs. 
-spark config: spark.sql.join.preferSortMergeJoin. 
+
 
 df1.hint('SHUFFLE_HASH').join(df2, on='id', how='inner')
 
